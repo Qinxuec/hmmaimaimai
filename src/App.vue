@@ -23,11 +23,12 @@
                         <a>退出</a>
                         <strong>|</strong>
                     </span>
-                    <a href="" class="">
+					<router-link to="/car">
                         <i class="iconfont icon-cart"></i>购物车(
                         <span id="shoppingCartCount">
                             <span>4</span>
-                        </span>)</a>
+                        </span>)
+					</router-link>
                 </div>
             </div>
         </div>
@@ -38,9 +39,9 @@
                 <div id="menu2" class="nav-box menuhd">
                     <ul>
                         <li class="index">
-                            <a href="#" class="">
+							<router-link to="/index">
                                 <span class="out" style="top: 0px;">首页</span>
-                            </a>
+							</router-link>
                         </li>
                         <li class="news">
                             <a href="#" class="">
@@ -81,6 +82,7 @@
         </div>
     </div>
 
+	<router-view></router-view>
     <!--底部-->
     <div class="footer">
 		<div class="section">
@@ -118,11 +120,31 @@
 </template>
 
 <script>
+import $ from 'jquery';
+export default {
+    name:"app",
+    mounted:function(){
+        // 插件js
+        $("#menu2 li a").wrapInner( '<span class="out"></span>' );
+        $("#menu2 li a").each(function() {
+            $( '<span class="over">' +  $(this).text() + '</span>' ).appendTo( this );
+        });
 
+        $("#menu2 li a").hover(function() {
+            $(".out",	this).stop().animate({'top':	'48px'},	300); // move down - hide
+            $(".over",	this).stop().animate({'top':	'0px'},		300); // move down - show
 
-export default {}
+        }, function() {
+            $(".out",	this).stop().animate({'top':	'0px'},		300); // move up - show
+            $(".over",	this).stop().animate({'top':	'-48px'},	300); // move up - hide
+        });
+
+    }
+}
 </script>
 
-<style>
+<style scoped>
 @import url('./assets/statics/site/css/style.css');
+@import url('./assets/statics/lib/hoverNav/css/style.css');
 </style>
+
