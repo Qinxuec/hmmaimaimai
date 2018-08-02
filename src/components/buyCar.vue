@@ -151,10 +151,12 @@ export default {
     }
     proIds = proIds.slice(0, -1);
     // console.log(proIds);
-    // if(proIds==''){
-    //     this.message=[];
-    //     return;
-    // }
+    if(proIds==''){
+        this.message=[];
+        //隐藏loding加载中
+        this.loading.close();
+        return;
+    }
     this.axios
       .get(`/site/comment/getshopcargoods/${proIds}`)
       .then(response => {
