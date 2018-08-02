@@ -22,9 +22,12 @@ import moment from 'moment';
 
 //每个路由都用到的抽取到入口中,必须添加到Vue构造函数中才可使用
 import axios from 'axios';
+//设置baseURL后调接口会自动拼接上这个地址
+axios.defaults.baseURL='http://47.106.148.205:8899';
 //设置携带cookie
 axios.defaults.withCredentials = true
 Vue.prototype.axios=axios;
+
 
 //引入iView框架,使用其中的图钉组件和回顶部效果
 // import iView from 'iview';
@@ -32,8 +35,7 @@ Vue.prototype.axios=axios;
 //引入vuex模块 用来多组件数据保存
 import Vuex from 'vuex'
 
-//设置baseURL后调接口会自动拼接上这个地址
-axios.defaults.baseURL='http://47.106.148.205:8899';
+
 
 // 挂载路由
 Vue.use(VueRouter)
@@ -68,6 +70,10 @@ const router = new VueRouter({
 //定义全局过滤器
 Vue.filter('cutTime',function(value){
   return moment(value).format('YYYY-MM-DD');
+})
+//评论中带时分秒的过滤器
+Vue.filter('cutTime2',function(value){
+  return moment(value).format('YYYY/MM/DD hh:mm:ss');
 })
 
 //进入页面先取购物车常驻数据,如果没有则为空
@@ -131,16 +137,16 @@ const store = new Vuex.Store({
 router.beforeEach((to, from, next) => {
   //保存来的路由
   store.commit('rememberFromPath',from.path);
-  // console.log(to);
-  if(to.path=='/payOrder'){
+  // console.log(to.path);
+  if(to.path.indexOf('/payOrder')!=-1){
     //要进入的是立即结算页面,需判断是否登陆
     axios.get('/site/account/islogin')
     .then((response)=>{
       // console.log(response);
       // 判断登录状态
       if(response.data.code=="nologin"){
-        //未登录.编程式导航去登陆页
-        router.push('/login')
+        //未登录,去登陆页
+        next('/login')
       }else{
         //已登陆,继续
         next();
@@ -158,7 +164,19 @@ Vue.config.productionTip = false
 new Vue({
   render: h => h(App),
   router,
-  store
+  store,
+  created() {
+    //组件加载完成在钩子函数中判断登陆状态
+    axios.get('/site/account/islogin')
+    .then((response)=>{
+      // console.log(response);
+      // 改变登录状态
+      store.state.islogin=response.data.code=="logined";
+    })
+    .catch(err=>{
+      console.log(err);  
+    })
+  },
 }).$mount('#app')
 
 //页面关闭时,存储购物车数据到localStorage,满足数据常驻的需求

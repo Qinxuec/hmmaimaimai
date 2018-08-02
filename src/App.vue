@@ -123,6 +123,7 @@
 import $ from 'jquery';
 export default {
     name:"app",
+    //钩子函数
     mounted:function(){
         // 插件js
         $("#menu2 li a").wrapInner( '<span class="out"></span>' );
@@ -149,7 +150,7 @@ export default {
                     //注销成功,去首页
                     this.$router.push('/index');
                     //修改登陆状态
-                    this.$store.commit("changeLogin",true);
+                    this.$store.commit("changeLogin",false);
                 }
             })
             .catch(err=>{

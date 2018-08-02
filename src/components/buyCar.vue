@@ -109,7 +109,7 @@
                             <button class="button" onclick="javascript:location.href='/index.html';">继续购物</button>
                             <!-- 需要挈带选中的商品id,不能直接跳转,用$route.push的方式跳转 -->
                             <!-- <router-link to="/payOrder"> -->
-                                <button class="submit" @click="toPayOrder">立即结算</button>
+                                <button type="button" class="submit" @click="toPayOrder">立即结算</button>
                             <!-- </router-link> -->
                         </div>
                     </div>
@@ -150,7 +150,7 @@ export default {
       proIds += ",";
     }
     proIds = proIds.slice(0, -1);
-    // console.log(proIds);
+    // 购物车为空则不需调接口
     if(proIds==''){
         this.message=[];
         //隐藏loding加载中
