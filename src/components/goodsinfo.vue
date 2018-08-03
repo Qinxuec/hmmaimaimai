@@ -120,7 +120,7 @@
                                             <div class="inner-box">
                                                 <div class="info">
                                                     <span>{{item.user_name}}</span>
-                                                    <span>{{item.add_time | cutTime2}}</span>
+                                                    <span>{{item.add_time | cutTime('YYYY/MM/DD hh:mm:ss')}}</span>
                                                 </div>
                                                 <p>{{item.content}}</p>
                                             </div>

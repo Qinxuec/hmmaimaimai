@@ -10,7 +10,11 @@ import buyCar from './components/buyCar.vue'
 import payOrder from './components/payOrder.vue'
 import login from './components/login.vue'
 import orderItem from './components/orderItem.vue'
-
+import paySuccess from './components/paySuccess.vue'
+import my from './components/my.vue'
+import orderList from './components/orderList.vue'
+import orderDetial from './components/orderDetial.vue'
+//引入样式
 import './assets/statics/site/css/style.css';
 //引入elementui模块
 import ElementUI from 'element-ui';
@@ -34,8 +38,6 @@ Vue.prototype.axios=axios;
 // import 'iview/dist/styles/iview.css';    // 使用 CSS
 //引入vuex模块 用来多组件数据保存
 import Vuex from 'vuex'
-
-
 
 // 挂载路由
 Vue.use(VueRouter)
@@ -61,15 +63,23 @@ const routes = [
   { path: '/buyCar', component: buyCar },
   { path:'/payOrder/:ids', component: payOrder},
   { path:'/login', component: login},
-  { path:'/orderItem/:orderid', component: orderItem}  
+  { path:'/orderItem/:orderid', component: orderItem},
+  { path:'/paySuccess', component: paySuccess}, 
+  { path:'/my', component: my},
+  { path:'/orderList', component: orderList},
+  { path:'/orderDetial/:orderid', component: orderDetial},                
 ];
 
 const router = new VueRouter({
   routes // (缩写) 相当于 routes: routes
 })
 //定义全局过滤器
-Vue.filter('cutTime',function(value){
-  return moment(value).format('YYYY-MM-DD');
+Vue.filter('cutTime',function(value,format){
+  if(format){
+    return moment(value).format(format);
+  }else{
+    return moment(value).format('YYYY-MM-DD');
+  }
 })
 //评论中带时分秒的过滤器
 Vue.filter('cutTime2',function(value){
